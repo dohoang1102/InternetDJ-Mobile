@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>InternetDJ Mobile</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0;" />
+        <meta charset="utf-8">
+
+        <script type="text/javascript" charset="utf-8" src="js/cordova-1.7.0.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.2.min.js"></script>
+
+        <script type="text/javascript" charset="utf-8" src="js/idjMain.js"></script>
+
+        <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
+        
+
+        <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
+        <link rel="stylesheet" href="jqm-docs.css" />
+        
+    </head>
+    <body>
+
+        <div id="home" data-role="page">
+          
+            <div data-role="content">	
+              
+                <div id="idj-homeheader">
+                    <img src="internetdj_logo.png" />
+                    <p>Discover the latest music on the go with InternetDJ Mobile.</p>
+                </div>
+              
+                <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a">
+                    <li data-role="list-divider">Find Songs</li>
+                    <li><a href="#sotd">Song of the day</a></li>
+                    <li><a href="#genres">Browse new songs by genre</a></li>
+                    <li><a href="#mostpop">Today's most popular songs</a></li>
+                    <!--<li><a href="#" onClick="getXidFromNative();">getXid</a></li>-->
+
+                    <li data-role="list-divider">Find Artists</li>
+                    <li><a href="#artistgenres">Search artists by genre</a></li>
+                </ul>
+                
+                <a id="genreSongs" href="#genreSongs" style="display:none;"></a>
+                <a id="genreArtists" href="#genreArtists" style="display:none;"></a>
+                <a id="showSong" href="#showSong" style="display:none;"></a> 
+                <a id="showArtist" href="#showArtist" style="display:none;"></a> 
+               
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+
+        <div id="mostpop" data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>Popular Today</h1>
+                <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div><!-- /header -->
+          
+            <div data-role="content"> 
+                <ul id="popSongsList" data-role="listview"></ul>
+              
+                <script type="text/javascript">
+                
+                    loadPopSongList();
+
+                </script>
+              
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+
+        <div id="genres" data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>Songs by Genre</h1>
+                <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div><!-- /header -->
+          
+            <div data-role="content"> 
+              
+                <ul id="songGenreList" data-role="listview"></ul>
+              
+                <script>
+                    loadGenreList('loadGenreSongs','#songGenreList');
+                </script>
+              
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+
+        <div id="artistgenres" data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>Artists by Genre</h1>
+                <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div><!-- /header -->
+          
+            <div data-role="content"> 
+              
+                <ul id="artistGenreList" data-role="listview"></ul>
+              
+                <script>
+                    loadGenreList('loadGenreArtists','#artistGenreList');
+                </script>
+                </script>
+              
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+
+        <div id="genreSongs" data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1 id="genreName"></h1>
+                <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div><!-- /header -->
+          
+            <div data-role="content"> 
+                
+                <ul id="genreSongsList" data-role="listview"></ul>
+
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+
+        <div id="genreArtists" data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1 id="genreArtistsName"></h1>
+                <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div><!-- /header -->
+          
+            <div data-role="content"> 
+              
+                <!-- hold variables -->
+                <span id="genreId" style="display:none"></span>
+                <span id="total" style="display:none"></span>
+              
+                <ul id="genreArtistsList" data-role="listview" data-theme="d"></ul>
+
+                <p id="pageNav" style="display: none;">
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <a id="#" class="pageNavPrev" style="display: none;" href="#" data-role="button" data-mini="true" data-icon="arrow-l">Prev</a>
+                        </div>
+                        <div class="ui-block-b">
+                            <a id="#" class="pageNavNext" style="display: none;" ref="#" data-role="button" data-mini="true" data-icon="arrow-r">Next</a>
+                        </div>
+                    </div>
+                </p>
+
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <p id="genreArtistListFooter"></p>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+        
+        <div id="showArtist" data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>Songs by Artist</h1>
+                <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div><!-- /header -->
+          
+            <div data-role="content"> 
+                <p>Songs by: <span style="font-weight: bold" id="artistName"></span></p>
+                <br />
+                <ul id="artistSongList" data-role="listview"></ul>
+
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+        <div id="showSong" data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>Play Song</h1>
+                <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div><!-- /header -->
+          
+            <div data-role="content"> 
+              
+                <p id="songTitle"></p>
+                <p id="songArtist"></p>
+                <p id="songGenre"></p>
+                <p id="songPlay"></p>
+                <p id="songImage"></p>
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+
+        <div id="sotd" data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>Song of the Day</h1>
+                <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+            </div><!-- /header -->
+          
+            <div data-role="content">
+              
+                <h3 id="sotdTitle"></h3>
+                <p id="sotdPlay"></p>
+                <p id="sotdItem"></p>
+
+                
+                <script type="text/javascript">
+                    loadSOTD();
+                </script>
+              
+            </div><!-- /content -->
+          
+            <div data-role="footer">
+                <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+    </body>
+</html>

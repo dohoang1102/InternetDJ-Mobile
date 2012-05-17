@@ -1,0 +1,17 @@
+body { background: #fff;}
+
+
+body #divName * 
+{ 
+    -webkit-backface-visibility: inherit !important; 
+    -webkit-box-sizing: inherit !important; 
+    -webkit-transform: translate3d(0,0,0) !important; 
+
+} 
+
+.ui-page {
+    -webkit-backface-visibility: hidden;
+}
+
+.ui-mobile #idj-homeheader { text-align: center }
+
