@@ -1,5 +1,11 @@
+// InternetDJ Mobile Content Gathering / Display Scripts
+//
+// Michael Bordash
+// michael@internetdj.com
+// http://www.internetdj.com
+
 $(document).bind("mobileinit", function(){
-  $.mobile.defaultPageTransition = 'none';
+  $.mobile.defaultPageTransition = 'slide';
 });
 
 $(document).ready(function(){
@@ -220,13 +226,14 @@ function loadSong(songId) {
 //                        + "\",\"" 
 //                        + escape(data[0].artist_name) 
 //                        + "\");'" 
-//                        + data[0].artist_name + "</a>";
+//                        + data[0].artist_name + " </a>";
+        var songArtist = "<span style='font-weight: bold'>Artist:</span> <a id='" + data[0].artist_id + "' href='#' onClick='javascript:loadArtist(\"" + data[0].artist_id + "\",\"" + escape(data[0].artist_name) + "\");'>" + data[0].artist_name + "</a>";
         var songId = data[0].song_id;
         var songImage = data[0].song_image_url;
 
+
         $('#songTitle').html(songTitle);
-        //$('#songArtist').html(songArtist);
-        $('#songGenre').html(songGenre);
+        $('#songArtist').html(songArtist);
         $('#songPlay').html('<audio controls><source src="http://www.internetdj.com/artists.php?op=stream&song=' + songId + '" preload="auto" /></audio>');
         $('#songImage').html('<img width="200" height="200" src="'+songImage+'" />');
     });
