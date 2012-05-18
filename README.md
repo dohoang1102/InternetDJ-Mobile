@@ -1,5 +1,5 @@
-InternetDJ
-==========
+InternetDJ Mobile
+=================
 
 Here's the source code that runs the http://www.InternetDJ.com iPhone Mobile App (download for free in the app store: http://itunes.apple.com/us/app/internetdj/id513783143 ). It is PhoneGap based with Xtify Push (http://www.xtify.com) and jQuery Mobile plugins. It uses JavaScript to consume InternetDJ Web Services APIs (http://www.internetdj.com/developers/). Feel free to improve upon it, or lift for your own purposes.
 
