@@ -51,13 +51,23 @@ function callXidNativeFunction(types, success, fail) {
 
 
 function loadSOTD() {
+    $('#sotdTitle').html('');
+    $('#sotdArtist').html('');
+    $('#sotdImage').html('');
+    $('#sotdPlay').html('');
+
     $.getJSON("http://www.internetdj.com/developers/api.php?api_key=1291928384728192&request_type=sotd&" + new Date().getTime(), function(data){
-            var sotdTitle = data[0].song_title + " by " + data[0].artist_name;
-            $('#sotdTitle').html(sotdTitle);
-            var songId = data[0].song_id;
-            $('#sotdPlay').html('<audio controls><source src="http://www.internetdj.com/artists.php?op=stream&song=' + songId + '" preload="auto" /></audio>');
-            var sotdImage = data[0].song_image_url;
-            $('#sotdItem').html('<img width="200" height="200" src="'+sotdImage+'" />');
+            
+        var sotdTitle = "<span style='font-weight: bold'>Title:</span> " + data[0].song_title;
+        var sotdArtist = "<span style='font-weight: bold'>Artist:</span> <a id='" + data[0].artist_id + "' href='#' onClick='javascript:loadArtist(\"" + data[0].artist_id + "\",\"" + escape(data[0].artist_name) + "\");'>" + data[0].artist_name + "</a>";
+        var sotdId = data[0].song_id;
+        var sotdImage = data[0].song_image_url;
+
+        $('#sotdTitle').html(sotdTitle);
+        $('#sotdArtist').html(sotdArtist);
+    
+        $('#sotdPlay').html('<audio controls><source src="http://www.internetdj.com/artists.php?op=stream&song=' + sotdId + '" preload="auto" /></audio>');
+        $('#sotdImage').html('<img width="200" height="200" src="'+sotdImage+'" />');
     });
 }
 
@@ -212,25 +222,15 @@ function loadArtist(artistId,artistName) {
 function loadSong(songId) {                
     $('#songTitle').html('');
     $('#songArtist').html('');
-    $('#songGenre').html('');
     $('#songImage').html('');
     $('#songPlay').html('');
                     
     $.getJSON("http://www.internetdj.com/developers/api.php?api_key=1291928384728192&request_type=song&song_id=" + songId + "&" + new Date().getTime(), function(data){
     
         var songTitle = "<span style='font-weight: bold'>Title:</span> " + data[0].song_title;
-//        var songArtist = "<span style='font-weight: bold'>Artist:</span> <a id='" 
-//                        + data[0].artist_id 
-//                        + "' href='#' onClick='javascript:loadArtist(\"" 
-//                        + data[0].artist_id 
-//                        + "\",\"" 
-//                        + escape(data[0].artist_name) 
-//                        + "\");'" 
-//                        + data[0].artist_name + " </a>";
         var songArtist = "<span style='font-weight: bold'>Artist:</span> <a id='" + data[0].artist_id + "' href='#' onClick='javascript:loadArtist(\"" + data[0].artist_id + "\",\"" + escape(data[0].artist_name) + "\");'>" + data[0].artist_name + "</a>";
         var songId = data[0].song_id;
         var songImage = data[0].song_image_url;
-
 
         $('#songTitle').html(songTitle);
         $('#songArtist').html(songArtist);
