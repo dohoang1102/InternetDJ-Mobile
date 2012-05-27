@@ -1,9 +1,9 @@
-body { background: #fff;}
+body { background-color: #fff;}
 
 
 body #divName * 
 { 
-    -webkit-backface-visibility: inherit !important; 
+    -webkit-backface-visibility: hidden; 
     -webkit-box-sizing: inherit !important; 
     -webkit-transform: translate3d(0,0,0) !important; 
 

@@ -5,7 +5,7 @@
 // http://www.internetdj.com
 
 $(document).bind("mobileinit", function(){
-  $.mobile.defaultPageTransition = 'slide';
+  $.mobile.defaultPageTransition = 'none';
 });
 
 $(document).ready(function(){
