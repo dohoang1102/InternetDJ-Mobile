@@ -6,6 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0;" />
         <meta charset="utf-8">
 
+        <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
+        <link rel="stylesheet" href="jqm-docs.css" />
+
         <script type="text/javascript" charset="utf-8" src="js/cordova-1.7.0.js"></script>
         <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.2.min.js"></script>
 
@@ -14,8 +17,7 @@
         <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
         
 
-        <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
-        <link rel="stylesheet" href="jqm-docs.css" />
+
         
     </head>
     <body>
@@ -31,19 +33,26 @@
               
                 <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a">
                     <li data-role="list-divider">Find Songs</li>
-                    <li><a href="#sotd">Song of the day</a></li>
-                    <li><a href="#genres">Browse new songs by genre</a></li>
-                    <li><a href="#mostpop">Today's most popular songs</a></li>
-                    <!--<li><a href="#" onClick="getXidFromNative();">getXid</a></li>-->
+                    <li><a id="li-sotd" href="#" data-theme="a">Song of the day</a></li>
+                    <li><a id="li-songGenres" href="#" data-theme="a">Browse new songs by genre</a></li>
+                    <li><a id="li-popsongs" href="#" data-theme="a">Today's most popular songs</a></li>
 
                     <li data-role="list-divider">Find Artists</li>
-                    <li><a href="#artistgenres">Search artists by genre</a></li>
+                    <li><a id="li-artistGenres" href="#" data-theme="a">Search artists by genre</a></li>
+                    
+                    <li data-role="list-divider">Stream Music</li>
+                    <li><a id="li-showPlaylist" href="#" data-theme="a">My Playlist</a></li>
                 </ul>
                 
+                <a id="showGenres" href="#genres" style="display:none;"></a>
                 <a id="genreSongs" href="#genreSongs" style="display:none;"></a>
                 <a id="genreArtists" href="#genreArtists" style="display:none;"></a>
                 <a id="showSong" href="#showSong" style="display:none;"></a> 
-                <a id="showArtist" href="#showArtist" style="display:none;"></a> 
+                <a id="showArtist" href="#showArtist" style="display:none;"></a>
+                <a id="showPopSongs" href="#showPopSongs" style="display:none;"></a> 
+                <a id="showArtistGenres" href="#artistgenres" style="display:none;"></a> 
+                <a id="clickPlaylist" href="#showPlaylist" style="display:none;"></a> 
+
                
             </div><!-- /content -->
           
@@ -53,21 +62,16 @@
         </div><!-- /page -->
 
 
-        <div id="mostpop" data-role="page" data-add-back-btn="true">
+        <div id="showPopSongs" data-role="page" data-add-back-btn="true">
             <div data-role="header">
                 <h1>Popular Today</h1>
                 <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
             </div><!-- /header -->
           
             <div data-role="content"> 
+            
                 <ul id="popSongsList" data-role="listview"></ul>
-              
-                <script type="text/javascript">
-                
-                    loadPopSongList();
-
-                </script>
-              
+        
             </div><!-- /content -->
           
             <div data-role="footer">
@@ -86,10 +90,6 @@
               
                 <ul id="songGenreList" data-role="listview"></ul>
               
-                <script>
-                    loadGenreList('loadGenreSongs','#songGenreList');
-                </script>
-              
             </div><!-- /content -->
           
             <div data-role="footer">
@@ -107,11 +107,6 @@
             <div data-role="content"> 
               
                 <ul id="artistGenreList" data-role="listview"></ul>
-              
-                <script>
-                    loadGenreList('loadGenreArtists','#artistGenreList');
-                </script>
-                </script>
               
             </div><!-- /content -->
           
@@ -202,37 +197,46 @@
                 <p id="songArtist"></p>
                 <p id="songPlay"></p>
                 <p id="songImage"></p>
+                <p id="addToPlaylist"></p>
+                
             </div><!-- /content -->
           
             <div data-role="footer">
                 <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
             </div><!-- /footer -->
         </div><!-- /page -->
-        
-
-        <div id="sotd" data-role="page" data-add-back-btn="true">
+    
+    
+        <div id="showPlaylist" data-role="page" data-add-back-btn="true">
             <div data-role="header">
-                <h1>Song of the Day</h1>
+                <h1>Playlist</h1>
                 <a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
             </div><!-- /header -->
           
-            <div data-role="content">
+            <div data-role="content"> 
+                <p>Play all of the songs you've added to your playlist.</p>
               
-                <p id="sotdTitle"></p>
-                <p id="sotdArtist"></p>
-                <p id="sotdPlay"></p>
-                <p id="sotdImage"></p>
+                <p id="showPlaylistPlayer">
+                    <div id="player"></div>
+                    <p>
+                        <div data-role="controlgroup" data-type="horizontal" data-mini="true">
+                            <a href="#" onclick="playPause()" data-mini="true" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="d">Play</a>
+                      
+                            <a href="#" onclick="playPause()" data-mini="true" data-role="button" data-icon="grid" data-iconpos="right" data-theme="d">Pause</a>
+                  
+                            <a href="#" onclick="nextSong()" data-mini="true" data-role="button" data-icon="forward" data-iconpos="right" data-theme="d">Next</a>
+                        </div>
+                    </p>
+                </p>
+                <p id="showPlaylistItems"></p>
                 
-                <script type="text/javascript">
-                    loadSOTD();
-                </script>
-              
             </div><!-- /content -->
           
             <div data-role="footer">
                 <h1><a href="mailto:michael@internetdj.com">Feedback?</a></h1>
             </div><!-- /footer -->
         </div><!-- /page -->
+    
         
     </body>
 </html>
