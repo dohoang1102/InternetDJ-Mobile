@@ -354,7 +354,7 @@ function loadPlayer() {
     audioPlayer.controls="controls";
     audioPlayer.addEventListener('ended',nextSong,false);
     audioPlayer.addEventListener('error',errorFallback,true);
-    document.getElementById("player").appendChild(audioPlayer);
+    document.getElementById("playlistPlayerControls").appendChild(audioPlayer);
     nextSong();
 }
 function nextSong() {
