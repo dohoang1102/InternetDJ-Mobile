@@ -305,7 +305,7 @@ function loadPlaylist() {
 
     db = window.openDatabase("internetdj", "1.0", "internetdj", 1000000);
     
-    db.transaction(queryDBPlaylist, errorCB);
+    db.transaction(queryDBPlaylist);
 
     $('#clickPlaylist').click();
 }
@@ -315,39 +315,49 @@ function queryDBPlaylist(tx) {
 }
 
 
-var next = 0;
-var urls = [];
+
+next = 0;
+urls = [];
 
 function querySuccess(tx, results) {
 
     // for each song ID get meta data from internetdj api endpoint
     var len = results.rows.length;
-    
     var playlistItems = '';
+
+    $('#playlistPlayerControls').html('');
+    $('#showPlaylistPlayer').html('');
     $('#showPlaylistItems').html('');
     
-    for (var i=0; i<len; i++) {
-        var songId = results.rows.item(i).songId;
-        urls[i] = 'http://www.internetdj.com/artists.php?op=stream&song=' + songId;
+    next = 0;
+    
+    for (var item=0; item<len; item++) {
+        var songId = results.rows.item(item).songId;
+        urls[item] = 'http://www.internetdj.com/artists.php?op=stream&song=' + songId;
 
+        $.ajaxSetup({
+            async: false
+        });
         $.getJSON("http://www.internetdj.com/developers/api.php?api_key=1291928384728192&request_type=song&song_id=" + songId + "&" + new Date().getTime(), function(data) {
-            
             var songTitle = data[0].song_title;
             var songArtist = data[0].artist_name;
             if(songTitle) {
-                playlistItems += '<a href="#" onClick="pickSong(' + i + ')">' + songArtist + ' - ' + songTitle + '</a><br />';
-            
+                var playlistItems = '<a id="' + item + '" href="#" title="' + songTitle + '" onClick="pickSong(' + item + ')">' + songArtist + ' - ' + songTitle + '</a><br />';
                 $('#showPlaylistItems').append(playlistItems);
             }
         });
     }
+
     loadPlayer();
 }
 
 function errorCB(err) {
-    alert("Error processing SQL: "+err.code);
+    if(err) {
+        $('#playlistPlayerButtons').html('');
+        $('#showPlaylistPlayer').html('<font style="font-style:italic">Nothing in your playlist yet. Go browsing InternetDJ and add some songs!</font>');
+        $('#showPlaylistItems').html('');
+    }
 }
-
 
 function loadPlayer() {
     var audioPlayer = new Audio();
@@ -359,6 +369,8 @@ function loadPlayer() {
 }
 function nextSong() {
     if(urls[next]!=undefined) {
+        $('#showPlaylistItems a').css('font-weight','normal');
+        $('#showPlaylistItems #' + next ).css('font-weight','bold');
         var audioPlayer = document.getElementsByTagName('audio')[0];
         if(audioPlayer!=undefined) {
             audioPlayer.src=urls[next];
@@ -368,8 +380,8 @@ function nextSong() {
         } else {
             loadPlayer();
         }
-    } else {
-        //alert('the end!');
+    } else { 
+        alert('here ' + next);
     }
 }
 function errorFallback() {

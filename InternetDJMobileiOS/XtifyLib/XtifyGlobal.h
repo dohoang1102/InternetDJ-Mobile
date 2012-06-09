@@ -14,7 +14,7 @@
 // Nothing works without this.
 
 // InternetDJ DEV Key #define xAppKey @"28b40a4a-5723-4051-8702-358a49bf670b"
-// InternetDJ PRD Key #define xAppKey @"28b40a4a-5723-4051-8702-358a49bf670b"
+// InternetDJ PRD Key #define xAppKey @"5f71923e-a1e6-4ced-a764-ab4f499a9c7f"
 
 #define xAppKey @"5f71923e-a1e6-4ced-a764-ab4f499a9c7f"
 
